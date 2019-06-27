@@ -1,0 +1,13 @@
+com\alibaba\datax\plugin\writer\ocswriter\utils\ConfigurationChecker.class
+com\alibaba\datax\plugin\writer\ocswriter\utils\OcsWriterErrorCode.class
+com\alibaba\datax\plugin\writer\ocswriter\OcsWriter$1.class
+com\alibaba\datax\plugin\writer\ocswriter\utils\ConfigurationChecker$WRITE_MODE.class
+com\alibaba\datax\plugin\writer\ocswriter\utils\ConfigurationChecker$WRITE_FORMAT.class
+com\alibaba\datax\plugin\writer\ocswriter\utils\CommonUtils.class
+com\alibaba\datax\plugin\writer\ocswriter\Key.class
+com\alibaba\datax\plugin\writer\ocswriter\OcsWriter$Task.class
+com\alibaba\datax\plugin\writer\ocswriter\OcsWriter.class
+com\alibaba\datax\plugin\writer\ocswriter\OcsWriter$Task$1.class
+com\alibaba\datax\plugin\writer\ocswriter\OcsWriter$Task$2.class
+com\alibaba\datax\plugin\writer\ocswriter\OcsWriter$Task$3.class
+com\alibaba\datax\plugin\writer\ocswriter\OcsWriter$Job.class
