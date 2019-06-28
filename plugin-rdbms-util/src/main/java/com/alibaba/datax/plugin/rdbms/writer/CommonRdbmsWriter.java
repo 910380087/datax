@@ -382,7 +382,7 @@ public class CommonRdbmsWriter {
                         preparedStatement.execute();
                     } catch (SQLException e) {
                         LOG.debug(e.toString());
-
+                        
                         this.taskPluginCollector.collectDirtyRecord(record, e);
                     } finally {
                         // 最后不要忘了关闭 preparedStatement
@@ -480,7 +480,7 @@ public class CommonRdbmsWriter {
                         utilDate = column.asDate();
                     } catch (DataXException e) {
                         throw new SQLException(String.format(
-                                "TIME 类型转换错误：[%s]", column));
+                                "TIME 类型转换错误：数据是[%s]", column));
                     }
 
                     if (null != utilDate) {
@@ -495,7 +495,7 @@ public class CommonRdbmsWriter {
                         utilDate = column.asDate();
                     } catch (DataXException e) {
                         throw new SQLException(String.format(
-                                "TIMESTAMP 类型转换错误：[%s]", column));
+                                "TIMESTAMP 类型转换错误：数据是[%s]", column));
                     }
 
                     if (null != utilDate) {

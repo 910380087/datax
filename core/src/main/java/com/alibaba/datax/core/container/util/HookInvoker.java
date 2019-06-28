@@ -85,17 +85,7 @@ public class HookInvoker {
     }
 
     public static void main(String[] args) {
-//        Map<String, Number> preLogStatics = communication.getCounter();
-//        preLogStatics.put("任务启动时刻", startTimeStamp);
-//        preLogStatics.put("任务结束时刻", endTimeStamp);
-//        preLogStatics.put("任务总计耗时", totalCosts);
-//        preLogStatics.put("任务平均流量", byteSpeedPerSecond);
-//        preLogStatics.put("记录写入速度", recordSpeedPerSecond);
-//        preLogStatics.put("读出记录总数", CommunicationTool.getTotalReadRecords(communication));
-//        preLogStatics.put("读写失败总数", CommunicationTool.getTotalErrorRecords(communication));
-//
-//        HookInvoker invoker = new HookInvoker(CoreConstant.DATAX_HOME + "/hook", configuration, preLogStatics);
-        new HookInvoker("D:\\datax\\hook",
+        new HookInvoker("/Users/xiafei/workspace/datax3/target/datax/datax/hook",
                 null, new HashMap<String, Number>()).invokeAll();
     }
 }

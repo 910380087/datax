@@ -553,10 +553,6 @@ public class JobContainer extends AbstractContainer {
         AbstractContainerCommunicator containerCommunicator = new StandAloneJobContainerCommunicator(configuration);
         super.setContainerCommunicator(containerCommunicator);
 
-        //设置终止位置
-        containerCommunicator.setPercentage(getPercentage());
-        containerCommunicator.setRecords(getRecords());
-
         return new StandAloneScheduler(containerCommunicator);
     }
 

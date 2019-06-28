@@ -14,11 +14,12 @@ import java.util.List;
 
 public class DirtyRecord implements Record {
 	private List<Column> columns = new ArrayList<Column>();
+	private List<DirtyColumn> dirtyColumns = new ArrayList<DirtyColumn>();
 
 	public static DirtyRecord asDirtyRecord(final Record record) {
 		DirtyRecord result = new DirtyRecord();
 		for (int i = 0; i < record.getColumnNumber(); i++) {
-			result.addColumn(record.getColumn(i));
+			result.addColumn(DirtyColumn.asDirtyColumn(record.getColumn(i),i));
 		}
 
 		return result;
@@ -28,6 +29,11 @@ public class DirtyRecord implements Record {
 	public void addColumn(Column column) {
 		this.columns.add(
                 DirtyColumn.asDirtyColumn(column, this.columns.size()));
+	}
+
+	public void addDirtyColumn(Column column, int index) {
+		this.dirtyColumns.add(
+				DirtyColumn.asNewDirtyColumn(column, index));
 	}
 
 	@Override
@@ -82,6 +88,10 @@ class DirtyColumn extends Column {
 		return new DirtyColumn(column, index);
 	}
 
+	public static DirtyColumn asNewDirtyColumn(final Column column, int index) {
+		return new DirtyColumn(column, index);
+	}
+
 	private DirtyColumn(Column column, int index) {
 		this(null == column ? null : column.getRawData(),
 				null == column ? Column.Type.NULL : column.getType(),
@@ -94,6 +104,27 @@ class DirtyColumn extends Column {
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public String getMayError(){
+		String mayError = "";
+		switch (super.getType()){
+			case BAD:
+				mayError += "没有配置类型或错误类型";
+				break;
+			case INT:
+				mayError += "类型最大值:" + new Integer(Integer.MAX_VALUE);
+				break;
+			case DATE:
+				mayError += "日期格式等";
+				break;
+			case LONG:
+				mayError += "类型最大值:" + new Long(Long.MAX_VALUE);
+				break;
+			default:
+				break;
+		}
+		return mayError;
 	}
 
 	@Override
@@ -147,5 +178,15 @@ class DirtyColumn extends Column {
 	private DirtyColumn(Object object, Type type, int byteSize, int index) {
 		super(object, type, byteSize);
 		this.setIndex(index);
+	}
+
+	@Override
+	public String toString() {
+		return "{" +
+				"类型=" + super.getType() +
+				", 数据=" + super.getRawData() +
+				", 字节数=" + super.getByteSize() +
+				", 序号=" + getIndex() +
+				'}';
 	}
 }

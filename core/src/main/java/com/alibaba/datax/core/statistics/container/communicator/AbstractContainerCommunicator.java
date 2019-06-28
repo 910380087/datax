@@ -22,26 +22,6 @@ public abstract class AbstractContainerCommunicator {
     private VMInfo vmInfo = VMInfo.getVmInfo();
     private long lastReportTime = System.currentTimeMillis();
 
-    protected Number percentage = -1;
-
-    protected Number records = -1;
-
-    public Number getPercentage() {
-        return percentage;
-    }
-
-    public void setPercentage(Number percentage) {
-        this.percentage = percentage;
-    }
-
-    public Number getRecords() {
-        return records;
-    }
-
-    public void setRecords(Number records) {
-        this.records = records;
-    }
-
 
     public Configuration getConfiguration() {
         return this.configuration;

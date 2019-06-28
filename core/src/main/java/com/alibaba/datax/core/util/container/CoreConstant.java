@@ -93,6 +93,10 @@ public class CoreConstant {
 
     public static final String DATAX_JOB_SETTING_ERRORLIMIT_RECORD = "job.setting.errorLimit.record";
 
+    //reader或writer的column
+    public static final String DATAX_JOB_READER_COLUMN = "job.content[0].reader.parameter.column";
+    public static final String DATAX_JOB_WRITER_COLUMN = "job.content[0].writer.parameter.column";
+
     public static final String DATAX_JOB_SETTING_ERRORLIMIT_PERCENT = "job.setting.errorLimit.percentage";
 
     public static final String DATAX_JOB_SETTING_DRYRUN = "job.setting.dryRun";

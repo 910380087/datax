@@ -46,7 +46,8 @@ public abstract class TaskPluginCollector implements PluginCollector {
 	 *            异常信息
 	 */
 	public void collectDirtyRecord(final Record dirtyRecord, final Throwable t) {
-		this.collectDirtyRecord(dirtyRecord, t, "");
+//		this.collectDirtyRecord(dirtyRecord, t, "");
+		this.collectDirtyRecord(dirtyRecord, t, t.getMessage());
 	}
 
 	/**

@@ -29,6 +29,9 @@ public class StdoutPluginCollector extends AbstractTaskPluginCollector {
 
     private AtomicInteger currentLogNum = new AtomicInteger(0);
 
+    private String readerColumn = null;
+    private String writerColumn = null;
+
     public StdoutPluginCollector(Configuration configuration, Communication communication,
                                  PluginType type) {
         super(configuration, communication, type);
@@ -36,10 +39,35 @@ public class StdoutPluginCollector extends AbstractTaskPluginCollector {
                 configuration.getInt(
                         CoreConstant.DATAX_CORE_STATISTICS_COLLECTOR_PLUGIN_MAXDIRTYNUM,
                         DEFAULT_MAX_DIRTYNUM));
+        LOG.info("【Configuration】" + configuration.toString());
+        //获取配置的列信息，可对比
+        String readerColumnTemp = configuration.getString(
+                        CoreConstant.DATAX_JOB_READER_COLUMN,
+                        "");
+        readerColumnTemp = readerColumnTemp.replace("index","序号");
+        readerColumnTemp = readerColumnTemp.replace("type","类型");
+        readerColumnTemp = readerColumnTemp.replace(" ","");
+        readerColumnTemp = readerColumnTemp.replace("\n","");
+        readerColumn = readerColumnTemp;
+        String writerColumnTemp = configuration.getString(
+                CoreConstant.DATAX_JOB_WRITER_COLUMN,
+                "");
+        writerColumnTemp = writerColumnTemp.replace("index","序号");
+        writerColumnTemp = writerColumnTemp.replace("type","类型");
+        writerColumnTemp = writerColumnTemp.replace(" ","");
+        writerColumnTemp = writerColumnTemp.replace("\n","");
+        writerColumn = writerColumnTemp;
     }
 
     private String formatDirty(final Record dirty, final Throwable t,
                                final String msg) {
+        String dirtyDataInfo = "";
+        dirtyDataInfo += "[报错信息]: " + msg + " \n";
+        dirtyDataInfo += "[Reader列信息]: " + readerColumn + " \n";
+        dirtyDataInfo += "[Writer列信息]: " + writerColumn + " \n";
+        dirtyDataInfo += "[该脏数据记录]: " + DirtyRecord.asDirtyRecord(dirty)
+                .getColumns() + " \n";
+        dirtyDataInfo += "[脏数据异常]: " + t.toString();
         Map<String, Object> msgGroup = new HashMap<String, Object>();
 
         msgGroup.put("type", super.getPluginType().toString());
@@ -54,7 +82,8 @@ public class StdoutPluginCollector extends AbstractTaskPluginCollector {
                     .getColumns());
         }
 
-        return JSON.toJSONString(msgGroup);
+//        return JSON.toJSONString(msgGroup);
+        return dirtyDataInfo;
     }
 
     @Override

@@ -143,10 +143,6 @@ public class TaskGroupContainer extends AbstractContainer {
             long lastReportTimeStamp = 0;
             Communication lastTaskGroupContainerCommunication = new Communication();
 
-            //设置终止位置
-            containerCommunicator.setPercentage(getPercentage());
-            containerCommunicator.setRecords(getRecords());
-
             while (true) {
             	//1.判断task状态
             	boolean failedOrKilled = false;

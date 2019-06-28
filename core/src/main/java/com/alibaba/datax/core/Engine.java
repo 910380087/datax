@@ -35,9 +35,6 @@ public class Engine {
 
     private static String RUNTIME_MODE;
 
-    private static Number PERCENTAGE = 100;
-    private static Number RECORDS = -1;
-
     /* check job model (job/task) first */
     public void start(Configuration allConf) {
 
@@ -79,7 +76,6 @@ public class Engine {
         //standlone模式的datax shell任务不进行汇报
         if(instanceId == -1){
             perfReportEnable = false;
-//            perfReportEnable = true;
         }
 
         int priority = 0;
@@ -93,11 +89,6 @@ public class Engine {
         //初始化PerfTrace
         PerfTrace perfTrace = PerfTrace.getInstance(isJob, instanceId, taskGroupId, priority, traceEnable);
         perfTrace.setJobInfo(jobInfoConfig,perfReportEnable,channelNumber);
-
-        //container设置终止点
-        container.setPercentage(PERCENTAGE);
-        container.setRecords(RECORDS);
-
         container.start();
 
     }
@@ -133,8 +124,6 @@ public class Engine {
         options.addOption("job", true, "Job config.");
         options.addOption("jobid", true, "Job unique id.");
         options.addOption("mode", true, "Job runtime mode.");
-        options.addOption("percentage", true, "Job run percentage.");
-        options.addOption("records", true, "Job run records.");
 
         BasicParser parser = new BasicParser();
         CommandLine cl = parser.parse(options, args);
@@ -146,17 +135,17 @@ public class Engine {
         LOG.info(jobPath);
         LOG.info("===========传入参数=============");
 
-        String percentage = cl.getOptionValue("percentage");
-        String records = cl.getOptionValue("records");
-        RECORDS = Integer.parseInt(records);
-        PERCENTAGE = Integer.parseInt(percentage.replace("%",""));
+//        String percentage = cl.getOptionValue("percentage");
+//        String records = cl.getOptionValue("records");
+//        RECORDS = Integer.parseInt(records);
+//        PERCENTAGE = Integer.parseInt(percentage.replace("%",""));
 
         LOG.info("===========传结束百分比=============");
-        LOG.info(PERCENTAGE.toString());
+//        LOG.info(PERCENTAGE.toString());
         LOG.info("===========传结束百分比=============");
 
         LOG.info("===========传结束记录数=============");
-        LOG.info(RECORDS.toString());
+//        LOG.info(RECORDS.toString());
         LOG.info("===========传结束记录数=============");
 
         // 如果用户没有明确指定jobid, 则 datax.py 会指定 jobid 默认值为-1
@@ -238,20 +227,7 @@ public class Engine {
     public static void main(String[] args) throws Exception {
         int exitCode = 0;
         try {
-            //调试内容
-//            LOG.info(Arrays.toString(args));
-            //-mode, standalone, -jobid, -1, -job, /home/datastash/dacp-datastash-broker-3.5.0/datax/oracle_1111111_2018_11_16_14_54_19_6c3d1635-cdd8-44ad-837f-20abc3fcaf84.json, -percentage, 100%, -records, 1
-            System.setProperty("datax.home","F:\\GitProjects\\DataX\\target\\datax\\datax");
-            String[] tempArgs = {"-mode", "standalone",
-                    "-jobid", "-1",
-                    "-job",
-                    "F:\\stream.json",
-                    "-percentage", "20%", "-records", "2"};
-            Engine.entry(tempArgs);
-
-
-//            正式内容
-//            Engine.entry(args);
+            Engine.entry(args);
         } catch (Throwable e) {
             exitCode = 1;
             LOG.error("\n\n经DataX智能分析,该任务最可能的错误原因是:\n" + ExceptionTracker.trace(e));

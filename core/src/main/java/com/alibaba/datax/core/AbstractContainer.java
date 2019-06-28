@@ -12,26 +12,6 @@ public abstract class AbstractContainer {
 
     protected AbstractContainerCommunicator containerCommunicator;
 
-    protected Number percentage;
-
-    protected Number records;
-
-    protected Number getPercentage() {
-        return percentage;
-    }
-
-    protected void setPercentage(Number percentage) {
-        this.percentage = percentage;
-    }
-
-    protected Number getRecords() {
-        return records;
-    }
-
-    protected void setRecords(Number records) {
-        this.records = records;
-    }
-
     public AbstractContainer(Configuration configuration) {
         Validate.notNull(configuration, "Configuration can not be null.");
 

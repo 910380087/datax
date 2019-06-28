@@ -46,16 +46,7 @@ public class StandAloneJobContainerCommunicator extends AbstractContainerCommuni
     @Override
     public void report(Communication communication) {
         super.getReporter().reportJobCommunication(super.getJobId(), communication);
-//        LOG.info(communication.getCounter().toString());
-        //获取读取数目,决定是否终止
-        Map<String, Number> map = communication.getCounter();
-        Number readedNumberRecords = map.get("readSucceedRecords");
-        LOG.info("当前readedNumberRecords:" +readedNumberRecords.longValue());
-        if (super.getRecords() != null)
-            if (super.getRecords().longValue() >= readedNumberRecords.longValue())
-                communication.setState(State.SUCCEEDED,true);
-//        communication.getState().value();
-
+//        LOG.info("StandAloneJobContainerCommunicator 报告");
         LOG.info(CommunicationTool.Stringify.getSnapshot(communication));
         reportVmInfo();
     }

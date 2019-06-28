@@ -473,7 +473,7 @@ public class UnstructuredStorageReaderUtil {
                                 }
 							} catch (Exception e) {
 								throw new IllegalArgumentException(String.format(
-										"类型转换错误, 无法将[%s] 转换为[%s]", columnValue,
+										"类型转换错误, 无法将数据[%s],类型[%s],序号[%s] 转换为[%s]", columnValue,columnType, columnIndex,
 										"LONG"));
 							}
 							break;
@@ -489,7 +489,7 @@ public class UnstructuredStorageReaderUtil {
                                 }
 							} catch (Exception e) {
 								throw new IllegalArgumentException(String.format(
-										"类型转换错误, 无法将[%s] 转换为[%s]", columnValue,
+										"类型转换错误, 无法将数据[%s],类型[%s],序号[%s] 转换为[%s]", columnValue,columnType, columnIndex,
 										"DOUBLE"));
 							}
 							break;
@@ -505,7 +505,7 @@ public class UnstructuredStorageReaderUtil {
                                 }
 							} catch (Exception e) {
 								throw new IllegalArgumentException(String.format(
-										"类型转换错误, 无法将[%s] 转换为[%s]", columnValue,
+										"类型转换错误, 无法将数据[%s],类型[%s],序号[%s] 转换为[%s]", columnValue,columnType, columnIndex,
 										"BOOLEAN"));
 							}
 
@@ -543,7 +543,7 @@ public class UnstructuredStorageReaderUtil {
 								}
 							} catch (Exception e) {
 								throw new IllegalArgumentException(String.format(
-										"类型转换错误, 无法将[%s] 转换为[%s]", columnValue,
+										"类型转换错误, 无法将数据[%s],类型[%s],序号[%s] 转换为[%s]", columnValue,columnType, columnIndex,
 										"DATE"));
 							}
 							break;
@@ -552,7 +552,7 @@ public class UnstructuredStorageReaderUtil {
                             break;
 						default:
 							String errorMessage = String.format(
-									"您配置的列类型暂不支持 : [%s]", columnType);
+									"您配置的列类型暂不支持 : 数据[%s],类型[%s],序号[%s] ", columnValue,columnType,columnIndex);
 							LOG.error(errorMessage);
 							throw DataXException
 									.asDataXException(

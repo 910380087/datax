@@ -21,7 +21,8 @@ public abstract class Column {
 	public Column(final Object object, final Type type, int byteSize) {
 		this.rawData = object;
 		this.type = type;
-		this.byteSize = byteSize;
+		//bytesize加上分隔符的byte 最后一个不变,因为是还有个换行符
+		this.byteSize = byteSize + 1;
 	}
 
 	public Object getRawData() {
@@ -45,7 +46,8 @@ public abstract class Column {
 	}
 
 	protected void setByteSize(int byteSize) {
-		this.byteSize = byteSize;
+		//bytesize加上分隔符的byte 最后一个不变,因为是还有个换行符
+		this.byteSize = byteSize + 1;
 	}
 
 	public abstract Long asLong();
@@ -64,9 +66,18 @@ public abstract class Column {
 
 	public abstract BigInteger asBigInteger();
 
+//	@Override
+//	public String toString() {
+//		return JSON.toJSONString(this);
+//	}
+
 	@Override
 	public String toString() {
-		return JSON.toJSONString(this);
+		return "{" +
+				"类型=" + type +
+				", 数据=" + rawData +
+				", 字节数=" + byteSize +
+				'}';
 	}
 
 	public enum Type {

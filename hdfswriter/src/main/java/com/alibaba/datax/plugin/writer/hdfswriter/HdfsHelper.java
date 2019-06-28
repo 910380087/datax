@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.hadoop.fs.*;
+import org.apache.hadoop.hdfs.DFSConfigKeys;
 import org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat;
 import org.apache.hadoop.hive.ql.io.orc.OrcSerde;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
@@ -464,6 +465,8 @@ public  class HdfsHelper {
                 		 outputPath = new Path(fileName+"__"+fileNum);
                 		 outFormat.setOutputPath(conf, outputPath);
                 	     outFormat.setWorkOutputPath(conf, outputPath);
+                	     //bug time connect Time out
+                	     conf.set(DFSConfigKeys.DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY,"630000");
                 	     writer = outFormat.getRecordWriter(fileSystem, conf, outputPath.toString(), Reporter.NULL);
                 	     lineCount=1;
                 	}
