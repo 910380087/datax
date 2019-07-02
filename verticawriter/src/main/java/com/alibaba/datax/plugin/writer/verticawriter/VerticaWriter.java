@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.writer.greenplumwriter;
+package com.alibaba.datax.plugin.writer.verticawriter;
 
 import ch.qos.logback.classic.Logger;
 import com.alibaba.datax.common.exception.DataXException;
@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 
-public class GreenPlumWriter extends  Writer{
+public class VerticaWriter extends  Writer{
 
 
-    private static final DataBaseType DATABASE_TYPE = DataBaseType.GREENPLUM;
+    private static final DataBaseType DATABASE_TYPE = DataBaseType.VERTICA;
 
-    private static Logger logger = (Logger) LoggerFactory.getLogger("GreenPlumReader");
+    private static Logger logger = (Logger) LoggerFactory.getLogger("VerticaWriter");
 
 
     public static class Job extends Writer.Job {
@@ -30,13 +30,13 @@ public class GreenPlumWriter extends  Writer{
         @Override
         public void init() {
             this.originalConfig = super.getPluginJobConf();
-            logger.info("GreenPlumWriter");
+            logger.info("VerticaWriter");
             // warn：not like mysql, GreenPlumSQL only support insert mode, don't use
             this.originalConfig.set(Key.WRITE_MODE,null);
             String writeMode = this.originalConfig.getString(Key.WRITE_MODE);
             if (null != writeMode) {
                 throw DataXException.asDataXException(DBUtilErrorCode.CONF_ERROR,
-                        String.format("写入模式(writeMode)配置有误. 因为GreenPlumSQL不支持配置参数项 writeMode: %s, PostgreSQL仅使用insert sql 插入数据. 请检查您的配置并作出修改.", writeMode));
+                        String.format("写入模式(writeMode)配置有误. 因为VerticaSQL不支持配置参数项 writeMode: %s, VerticaSQL仅使用insert sql 插入数据. 请检查您的配置并作出修改.", writeMode));
             }
 
             this.commonRdbmsWriterMaster = new CommonRdbmsWriter.Job(DATABASE_TYPE);
@@ -72,7 +72,7 @@ public class GreenPlumWriter extends  Writer{
         @Override
         public void init() {
             this.writerSliceConfig = super.getPluginJobConf();
-            logger.info("GreenPlumWriter.Task");
+            logger.info("VerticaWriter.Task");
             this.commonRdbmsWriterSlave = new CommonRdbmsWriter.Task(DATABASE_TYPE){
                 @Override
                 public String calcValueHolder(String columnType){

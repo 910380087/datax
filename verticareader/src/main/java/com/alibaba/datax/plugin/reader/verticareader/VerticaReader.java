@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.reader.greenplumreader;
+package com.alibaba.datax.plugin.reader.verticareader;
 
 import ch.qos.logback.classic.Logger;
 import com.alibaba.datax.common.exception.DataXException;
@@ -12,11 +12,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class GreenPlumReader extends Reader {
+public class VerticaReader extends Reader {
 
-    private static final DataBaseType DATABASE_TYPE = DataBaseType.GREENPLUM;
+    private static final DataBaseType DATABASE_TYPE = DataBaseType.VERTICA;
 
-    private static Logger logger = (Logger) LoggerFactory.getLogger("GreenPlumReader");
+    private static Logger logger = (Logger) LoggerFactory.getLogger("VerticaReader");
 
     public static class Job extends Reader.Job {
 
@@ -26,8 +26,8 @@ public class GreenPlumReader extends Reader {
         @Override
         public void init() {
             this.originalConfig = super.getPluginJobConf();
-            logger.info("GreenPlumReader");
-            logger.info("GreenPlumReaderConfig:");
+            logger.info("VerticaReader");
+            logger.info("VerticaReaderConfig:");
             logger.info(originalConfig.toString());
             this.originalConfig.set(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE, Constant.DEFAULT_FETCH_SIZE);
             int fetchSize = this.originalConfig.getInt(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE,
