@@ -185,6 +185,7 @@ public class CommonRdbmsReader {
             Connection conn = DBUtil.getConnection(this.dataBaseType, jdbcUrl,
                     username, password);
 
+
             // session config .etc related
             DBUtil.dealWithSessionConfig(conn, readerSliceConfig,
                     this.dataBaseType, basicMsg);
@@ -192,7 +193,7 @@ public class CommonRdbmsReader {
             int columnNumber = 0;
             ResultSet rs = null;
             try {
-                rs = DBUtil.query(conn, querySql, fetchSize);
+                rs = DBUtil.query(this.dataBaseType,conn, querySql, fetchSize);
                 queryPerfRecord.end();
 
                 ResultSetMetaData metaData = rs.getMetaData();
@@ -204,6 +205,7 @@ public class CommonRdbmsReader {
 
                 long rsNextUsedTime = 0;
                 long lastTime = System.nanoTime();
+
                 while (rs.next()) {
                     rsNextUsedTime += (System.nanoTime() - lastTime);
                     this.transportOneRecord(recordSender, rs,
@@ -213,7 +215,7 @@ public class CommonRdbmsReader {
 
                 allResultPerfRecord.end(rsNextUsedTime);
                 //目前大盘是依赖这个打印，而之前这个Finish read record是包含了sql查询和result next的全部时间
-                LOG.info("Finished read record by Sql: [{}\n] {}.",
+                LOG.info("Finished read record by Sql: [{}]\n {}.",
                         querySql, basicMsg);
 
             }catch (Exception e) {
@@ -234,7 +236,7 @@ public class CommonRdbmsReader {
         protected Record transportOneRecord(RecordSender recordSender, ResultSet rs, 
                 ResultSetMetaData metaData, int columnNumber, String mandatoryEncoding, 
                 TaskPluginCollector taskPluginCollector) {
-            Record record = buildRecord(recordSender,rs,metaData,columnNumber,mandatoryEncoding,taskPluginCollector); 
+            Record record = buildRecord(recordSender,rs,metaData,columnNumber,mandatoryEncoding,taskPluginCollector);
             recordSender.sendToWriter(record);
             return record;
         }

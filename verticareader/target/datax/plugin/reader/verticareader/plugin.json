@@ -1,0 +1,7 @@
+{
+    "name": "verticareader",
+    "class": "com.alibaba.datax.plugin.reader.verticareader.VerticaReader",
+    "description": "useScene: test. mechanism: use datax framework to transport data from txt file. warn: The more you know about the data, the less problems you encounter.",
+    "developer": "asiainfo"
+}
+

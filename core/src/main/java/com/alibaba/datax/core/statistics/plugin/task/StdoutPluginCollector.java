@@ -39,7 +39,7 @@ public class StdoutPluginCollector extends AbstractTaskPluginCollector {
                 configuration.getInt(
                         CoreConstant.DATAX_CORE_STATISTICS_COLLECTOR_PLUGIN_MAXDIRTYNUM,
                         DEFAULT_MAX_DIRTYNUM));
-        LOG.info("【Configuration】" + configuration.toString());
+//        LOG.info("【Configuration】" + configuration.toString());
         //获取配置的列信息，可对比
         String readerColumnTemp = configuration.getString(
                         CoreConstant.DATAX_JOB_READER_COLUMN,

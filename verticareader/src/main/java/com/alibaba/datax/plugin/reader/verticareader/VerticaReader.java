@@ -29,14 +29,20 @@ public class VerticaReader extends Reader {
             logger.info("VerticaReader");
             logger.info("VerticaReaderConfig:");
             logger.info(originalConfig.toString());
-            this.originalConfig.set(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE, Constant.DEFAULT_FETCH_SIZE);
-            int fetchSize = this.originalConfig.getInt(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE,
-                    Constant.DEFAULT_FETCH_SIZE);
-            if (fetchSize < 1) {
-                throw DataXException.asDataXException(DBUtilErrorCode.REQUIRED_VALUE,
-                        String.format("您配置的fetchSize有误，根据DataX的设计，fetchSize : [%d] 设置值不能小于 1.", fetchSize));
+            Integer userConfigedFetchSize = this.originalConfig.getInt(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE);
+            if (userConfigedFetchSize != null) {
+                logger.warn("对 mysqlreader 不需要配置 fetchSize, mysqlreader 将会忽略这项配置. 如果您不想再看到此警告,请去除fetchSize 配置.");
             }
-            this.originalConfig.set(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE, fetchSize);
+
+            this.originalConfig.set(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE, Integer.MIN_VALUE);
+
+//            int fetchSize = this.originalConfig.getInt(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE,
+//                    Constant.DEFAULT_FETCH_SIZE);
+//            if (fetchSize < 1) {
+//                throw DataXException.asDataXException(DBUtilErrorCode.REQUIRED_VALUE,
+//                        String.format("您配置的fetchSize有误，根据DataX的设计，fetchSize : [%d] 设置值不能小于 1.", fetchSize));
+//            }
+//            this.originalConfig.set(com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE, fetchSize);
 
             this.commonRdbmsReaderMaster = new CommonRdbmsReader.Job(DATABASE_TYPE);
             this.commonRdbmsReaderMaster.init(this.originalConfig);

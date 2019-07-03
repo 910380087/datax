@@ -372,6 +372,7 @@ public class CommonRdbmsWriter {
             PreparedStatement preparedStatement = null;
             try {
                 connection.setAutoCommit(true);
+                LOG.info("[insert sql]" + this.writeRecordSql);
                 preparedStatement = connection
                         .prepareStatement(this.writeRecordSql);
 

@@ -125,19 +125,30 @@ public final class WriterUtil {
             //update只在mysql下使用
 
             writeDataSqlTemplate = new StringBuilder()
-                    .append("INSERT /*+ append parallel(a, 8) nologging */ INTO %s a (").append(StringUtils.join(columnHolders, ","))
+                    .append("INSERT INTO %s a (").append(StringUtils.join(columnHolders, ","))
                     .append(") VALUES(").append(StringUtils.join(valueHolders, ","))
                     .append(")")
                     .append(onDuplicateKeyUpdateString(columnHolders))
                     .toString();
-        } else {
+        } else if ( dataBaseType == DataBaseType.VERTICA ) {
+            //update只在mysql下使用
+            //vertica 的insert语句重新格式化
+            //这里是保护,如果其他错误的使用了update,需要更换为replace
+            if (writeMode.trim().toLowerCase().startsWith("update")) {
+                writeMode = "replace";
+            }
+            writeDataSqlTemplate = new StringBuilder().append(writeMode)
+                    .append(" INTO %s (").append(StringUtils.join(columnHolders, ","))
+                    .append(") VALUES(").append(StringUtils.join(valueHolders, ","))
+                    .append(")").toString();
+        } else  {
 
             //这里是保护,如果其他错误的使用了update,需要更换为replace
             if (writeMode.trim().toLowerCase().startsWith("update")) {
                 writeMode = "replace";
             }
             writeDataSqlTemplate = new StringBuilder().append(writeMode)
-                    .append(" INTO /*+ append parallel(a, 8) nologging */ %s a (").append(StringUtils.join(columnHolders, ","))
+                    .append(" INTO %s a (").append(StringUtils.join(columnHolders, ","))
                     .append(") VALUES(").append(StringUtils.join(valueHolders, ","))
                     .append(")").toString();
         }

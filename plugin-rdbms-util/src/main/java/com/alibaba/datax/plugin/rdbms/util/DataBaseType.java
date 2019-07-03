@@ -58,6 +58,10 @@ public enum DataBaseType {
             	break;
             case RDBMS:
                 break;
+            case VERTICA:
+                break;
+            case GREENPLUM:
+                break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
         }
@@ -94,6 +98,10 @@ public enum DataBaseType {
             case PostgreSQL:
             	break;
             case RDBMS:
+                break;
+            case VERTICA:
+                break;
+            case GREENPLUM:
                 break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");

@@ -73,18 +73,7 @@ public class VerticaWriter extends  Writer{
         public void init() {
             this.writerSliceConfig = super.getPluginJobConf();
             logger.info("VerticaWriter.Task");
-            this.commonRdbmsWriterSlave = new CommonRdbmsWriter.Task(DATABASE_TYPE){
-                @Override
-                public String calcValueHolder(String columnType){
-                    if("serial".equalsIgnoreCase(columnType)){
-                        return "?::int";
-                    }else if("bit".equalsIgnoreCase(columnType)){
-                        return "?::bit varying";
-                    }
-                    logger.info("?::" + columnType);
-                    return "?::" + columnType;
-                }
-            };
+            this.commonRdbmsWriterSlave = new CommonRdbmsWriter.Task(DATABASE_TYPE);
             this.commonRdbmsWriterSlave.init(this.writerSliceConfig);
         }
 

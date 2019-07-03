@@ -381,14 +381,19 @@ public final class DBUtil {
             prop.put("oracle.jdbc.ReadTimeout", socketTimeout);
         }
 
+        if (dataBaseType == DataBaseType.VERTICA) {
+            // login timeout
+            prop.put("loginTimeout", "35");
+        }
+
         return connect(dataBaseType, url, prop);
     }
 
     private static synchronized Connection connect(DataBaseType dataBaseType,
                                                    String url, Properties prop) {
         try {
-            Class.forName(dataBaseType.getDriverClassName());
-            DriverManager.setLoginTimeout(Constant.TIMEOUT_SECONDS);
+             Class.forName(dataBaseType.getDriverClassName());
+             DriverManager.setLoginTimeout(Constant.TIMEOUT_SECONDS);
             return DriverManager.getConnection(url, prop);
         } catch (Exception e) {
             throw RdbmsException.asConnException(dataBaseType, e, prop.getProperty("user"), null);
@@ -403,10 +408,10 @@ public final class DBUtil {
      * @return a {@link ResultSet}
      * @throws SQLException if occurs SQLException.
      */
-    public static ResultSet query(Connection conn, String sql, int fetchSize)
+    public static ResultSet query(DataBaseType dataBaseType,Connection conn, String sql, int fetchSize)
             throws SQLException {
         // 默认3600 s 的query Timeout
-        return query(conn, sql, fetchSize, Constant.SOCKET_TIMEOUT_INSECOND);
+        return query(dataBaseType,conn, sql, fetchSize, Constant.SOCKET_TIMEOUT_INSECOND);
     }
 
     /**
@@ -419,13 +424,23 @@ public final class DBUtil {
      * @return
      * @throws SQLException
      */
-    public static ResultSet query(Connection conn, String sql, int fetchSize, int queryTimeout)
+    public static ResultSet query(DataBaseType dataBaseType,Connection conn, String sql, int fetchSize, int queryTimeout)
             throws SQLException {
         // make sure autocommit is off
         conn.setAutoCommit(false);
-        Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
-                ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(fetchSize);
+        Statement stmt;
+        //verica not support fetch size
+        if(dataBaseType != DataBaseType.VERTICA) {
+            stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+                    ResultSet.CONCUR_READ_ONLY);
+            stmt.setFetchSize(fetchSize);
+        }else {
+//            LOG.info("[vertica]数据库，不使用fetchSize");
+//            LOG.info("[vertica]数据库，执行sql为:" + sql);
+            stmt = conn.createStatement();
+//            stmt.setFetchSize(fetchSize);
+
+        }
         stmt.setQueryTimeout(queryTimeout);
         return query(stmt, sql);
     }

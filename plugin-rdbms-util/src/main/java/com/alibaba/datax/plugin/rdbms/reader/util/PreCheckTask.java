@@ -66,7 +66,8 @@ public class PreCheckTask implements Callable<Boolean>{
                 try {
                     DBUtil.sqlValid(querySql,dataBaseType);
                     if(i == 0) {
-                        rs = DBUtil.query(conn, querySql, fetchSize);
+                        //传入数据类型
+                        rs = DBUtil.query(dataBaseType,conn, querySql, fetchSize);
                     }
                 } catch (ParserException e) {
                     throw RdbmsException.asSqlParserException(this.dataBaseType, e, querySql);

@@ -46,7 +46,6 @@
 
         <!-- reader -->
         <module>mysqlreader</module>
-		<module>greenplumreader</module>
         <module>drdsreader</module>
         <module>sqlserverreader</module>
         <module>postgresqlreader</module>
@@ -63,11 +62,12 @@
         <module>rdbmsreader</module>
         <module>hbase11xreader</module>
         <module>hbase094xreader</module>
-        <module>plugin-unstructured-storage-util/datax-test</module>
+        <module>verticareader</module>
+        <module>redisreader</module>
+        <module>greenplumreader</module>
 
         <!-- writer -->
         <module>mysqlwriter</module>
-		<module>greenplumwriter</module>
         <module>drdswriter</module>
         <module>odpswriter</module>
         <module>txtfilewriter</module>
@@ -86,12 +86,19 @@
         <module>hbase11xwriter</module>
         <module>hbase094xwriter</module>
         <module>hbase11xsqlwriter</module>
+       
         <module>elasticsearchwriter</module>
+        
+        <module>rediswriter</module>
+        <module>verticawriter</module>
+        <module>greenplumwriter</module>
+
 
         <!-- common support module -->
         <module>plugin-rdbms-util</module>
         <module>plugin-unstructured-storage-util</module>
-
+        
+        
     </modules>
 
     <dependencyManagement>

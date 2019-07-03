@@ -175,7 +175,7 @@ public class SingleTableSplitUtil {
         Pair<Object, Object> minMaxPK = null;
         try {
             try {
-                rs = DBUtil.query(conn, pkRangeSQL, fetchSize);
+                rs = DBUtil.query(DATABASE_TYPE,conn, pkRangeSQL, fetchSize);
             }catch (Exception e) {
                 throw RdbmsException.asQueryException(DATABASE_TYPE, e, pkRangeSQL,table,username);
             }
@@ -322,7 +322,7 @@ public class SingleTableSplitUtil {
         List<Pair<Object, Integer>> splitedRange = new ArrayList<Pair<Object, Integer>>();
         try {
             try {
-                rs = DBUtil.query(conn, splitSql, fetchSize);
+                rs = DBUtil.query(DATABASE_TYPE, conn, splitSql, fetchSize);
             } catch (Exception e) {
                 throw RdbmsException.asQueryException(DATABASE_TYPE, e,
                         splitSql, table, username);
