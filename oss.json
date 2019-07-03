@@ -1,0 +1,53 @@
+{
+  "job": {
+    "content": [{
+      "reader": {
+        "name": "ossreader",
+        "parameter": {
+          "endpoint": "http://oss.aliyuncs.com",
+          "accessId": "",
+          "accessKey": "",
+          "bucket": "myBucket",
+          "object": [
+            "bazhen/*"
+          ],
+          "column": [{
+            "type": "long",
+            "index": 0
+          },
+            {
+              "type": "string",
+              "value": "alibaba"
+            },
+            {
+              "type": "date",
+              "index": 1,
+              "format": "yyyy-MM-dd"
+            }
+          ],
+          "encoding": "UTF-8",
+          "fieldDelimiter": "\t",
+          "compress": "gzip"
+        }
+      },
+      "writer": {
+        "name": "osswriter",
+        "parameter": {
+          "endpoint": "http://oss.aliyuncs.com",
+          "accessId": "",
+          "accessKey": "",
+          "bucket": "myBucket",
+          "object": "/cdo/datax",
+          "encoding": "UTF-8",
+          "fieldDelimiter": ",",
+          "writeMode": "truncate|append|nonConflict"
+        }
+      }
+    }],
+    "setting": {
+      "speed": {
+        "channel": 5
+      }
+    }
+  }
+}
