@@ -6,12 +6,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.Pair;
+import org.apache.hadoop.security.UserGroupInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +33,8 @@ public class Hbase11xHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(Hbase11xHelper.class);
 
-    public static org.apache.hadoop.hbase.client.Connection getHbaseConnection(String hbaseConfig) {
+
+    public static org.apache.hadoop.conf.Configuration getHbaseConfiguration(String hbaseConfig) {
         if (StringUtils.isBlank(hbaseConfig)) {
             throw DataXException.asDataXException(Hbase11xReaderErrorCode.REQUIRED_VALUE, "读 Hbase 时需要配置hbaseConfig，其内容为 Hbase 连接信息，请联系 Hbase PE 获取该信息.");
         }
@@ -39,13 +42,63 @@ public class Hbase11xHelper {
         try {
             Map<String, String> hbaseConfigMap = JSON.parseObject(hbaseConfig, new TypeReference<Map<String, String>>() {});
             // 用户配置的 key-value 对 来表示 hbaseConfig
-            Validate.isTrue(hbaseConfigMap != null && hbaseConfigMap.size() !=0, "hbaseConfig不能为空Map结构!");
+            Validate.isTrue(hbaseConfigMap != null, "hbaseConfig不能为空Map结构!");
+            Boolean isKerberos = false;
+            String keytabPath = "";
+            String principal = "";
             for (Map.Entry<String, String> entry : hbaseConfigMap.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase("hbase-site.path")){
+                    hConfiguration.addResource(new Path(entry.getValue()));
+                    LOG.info("hbase-site.path:"+entry.getValue());
+                }
+                if (entry.getKey().equalsIgnoreCase("keytab.file")){
+                    keytabPath = entry.getValue();
+                    LOG.info("keytab.file:"+keytabPath);
+                }
+                if (entry.getKey().equalsIgnoreCase("kerberos.principal")){
+                    principal = entry.getValue();
+                    LOG.info("kerberos.principal:"+principal);
+                }
+                if (entry.getKey().equalsIgnoreCase("dacp.krb5.conf")){
+                    isKerberos = true;
+                    System.setProperty("java.security.krb5.conf", entry.getValue());
+                    LOG.info("java.security.krb5.conf:"+entry.getValue());
+                }
                 hConfiguration.set(entry.getKey(), entry.getValue());
             }
+            if (isKerberos){
+                LOG.info("is kerberos");
+                hConfiguration.set("hadoop.security.authentication","kerberos");
+                UserGroupInformation.setConfiguration(hConfiguration);
+                UserGroupInformation. loginUserFromKeytab(principal,keytabPath);
+            }
+
         } catch (Exception e) {
             throw DataXException.asDataXException(Hbase11xReaderErrorCode.GET_HBASE_CONNECTION_ERROR, e);
         }
+        return hConfiguration;
+    }
+
+
+    public static org.apache.hadoop.hbase.client.Connection getHbaseConnection(String hbaseConfig) {
+        if (StringUtils.isBlank(hbaseConfig)) {
+            throw DataXException.asDataXException(Hbase11xReaderErrorCode.REQUIRED_VALUE, "读 Hbase 时需要配置hbaseConfig，其内容为 Hbase 连接信息，请联系 Hbase PE 获取该信息.");
+        }
+//        org.apache.hadoop.conf.Configuration hConfiguration = HBaseConfiguration.create();
+//        try {
+//            Map<String, String> hbaseConfigMap = JSON.parseObject(hbaseConfig, new TypeReference<Map<String, String>>() {});
+//            // 用户配置的 key-value 对 来表示 hbaseConfig
+//            Validate.isTrue(hbaseConfigMap != null && hbaseConfigMap.size() !=0, "hbaseConfig不能为空Map结构!");
+//            for (Map.Entry<String, String> entry : hbaseConfigMap.entrySet()) {
+//                hConfiguration.set(entry.getKey(), entry.getValue());
+//            }
+//        } catch (Exception e) {
+//            throw DataXException.asDataXException(Hbase11xReaderErrorCode.GET_HBASE_CONNECTION_ERROR, e);
+//        }
+
+        //获得configuration
+        org.apache.hadoop.conf.Configuration hConfiguration = Hbase11xHelper.getHbaseConfiguration(hbaseConfig);
+
         org.apache.hadoop.hbase.client.Connection hConnection = null;
         try {
             hConnection = ConnectionFactory.createConnection(hConfiguration);

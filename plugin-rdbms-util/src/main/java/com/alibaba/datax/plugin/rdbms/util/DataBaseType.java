@@ -19,6 +19,7 @@ public enum DataBaseType {
     RDBMS("rdbms", "com.alibaba.datax.plugin.rdbms.util.DataBaseType"),
     DB2("db2", "com.ibm.db2.jcc.DB2Driver"),
     ADS("ads","com.mysql.jdbc.Driver"),
+    HIVE("hive","org.apache.hive.jdbc.HiveDriver"),
     VERTICA("vertica","com.vertica.jdbc.Driver"),
     GREENPLUM("greenplum","com.pivotal.jdbc.GreenplumDriver");
 
@@ -62,6 +63,8 @@ public enum DataBaseType {
                 break;
             case GREENPLUM:
                 break;
+            case HIVE:
+                break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
         }
@@ -102,6 +105,8 @@ public enum DataBaseType {
             case VERTICA:
                 break;
             case GREENPLUM:
+                break;
+            case HIVE:
                 break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
