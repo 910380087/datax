@@ -383,7 +383,7 @@ public class CommonRdbmsWriter {
                         preparedStatement.execute();
                     } catch (SQLException e) {
                         LOG.debug(e.toString());
-                        
+                        LOG.error("[insert sql]" + this.writeRecordSql);
                         this.taskPluginCollector.collectDirtyRecord(record, e);
                     } finally {
                         // 最后不要忘了关闭 preparedStatement

@@ -51,6 +51,7 @@
             <artifactId>plugin-unstructured-storage-util</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka -->
         <dependency>
             <groupId>org.apache.kafka</groupId>

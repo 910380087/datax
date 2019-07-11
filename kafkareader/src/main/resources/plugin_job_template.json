@@ -1,18 +1,31 @@
 {
-    "name": "kafkareader",
-    "parameter": {
-        "servers": "",
-        "acks": "",
-        "retries": "",
-        "batchSize": "",
-        "delayMs": "",
-        "bufferMemory": [],
-        "keySerializer": [],
-        "valueSerializer": "",
-        "topics": [
-            {
-                "topic": ""
-            }
-        ]
-    }
+  "name": "kafkareader",
+  "parameter": {
+    "kerberos": "true",
+    "principal": "",
+    "userKeytab": "",
+    "krb5Conf": "",
+    "jassConfFilePath": "",
+    "configFilePath": "",
+    "servers": "192.168.190.213:6667,192.168.190.214:6667,192.168.190.215:6667",
+    "acks": "all",
+    "stopDate": "2019-07-12 12:00:00",
+    "stopNumber": 12345678,
+    "retries": "0",
+    "batchSize": "16834",
+    "groupId": "hello",
+    "formBeginning": "hello",
+    "delayMs": "1",
+    "bufferMemory": "33554432",
+    "keySerializer": "org.apache.kafka.common.serialization.IntegerSerializer",
+    "keyDeserializer": "org.apache.kafka.common.serialization.IntegerDeserializer",
+    "valueDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+    "valueSerializer": "org.apache.kafka.common.serialization.StringSerializer",
+    "topics": [
+      {
+        "topic": "hello",
+        "partition": "144"
+      }
+    ]
+  }
 }
