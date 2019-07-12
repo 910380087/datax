@@ -1,0 +1,16 @@
+{
+  "name": "redisreader",
+  "parameter": {
+    "mode": "single|cluster|sentinel",
+    "servers": "192.168.190.216:6379",
+    "hashKey": "",
+    "column": [
+      {
+        "type": "string",
+        "index": 0
+      }
+    ],
+    "nullFormat": "\\N",
+    "fieldDelimiter": ","
+  }
+}

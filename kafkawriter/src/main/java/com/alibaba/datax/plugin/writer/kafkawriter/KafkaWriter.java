@@ -359,27 +359,21 @@ public class KafkaWriter extends Writer {
         }
 
         public void startWrite(RecordReceiver recordReceiver) {
-
             logger.info("KafkaReader start write ");
-//            KafkaReader<String, String> producer;
 
             //实例化一个生产者
             KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 
             //死循环不停的从broker中拿数据
-            long dataNumber = 0;
-            while (true) {
-                String line = readOneTransportRecord(recordReceiver,this.writerSliceConfig,this.getTaskPluginCollector());
-                logger.info("得到的line为" + line);
+            Record recordTemp = recordReceiver.getFromReader();
+            while (recordTemp != null) {
+                String line = readOneTransportRecord(recordTemp,this.writerSliceConfig,this.getTaskPluginCollector());
+//                logger.info("得到的line为" + line);
                 //发送topic和partition
                 for (TopicPartition topic : this.topicsAndPartitions) {
                     ProducerRecord<String, String> record =
                             new ProducerRecord<String, String>(topic.topic(), topic.partition(),
                                     null, line);
-                    dataNumber++;
-                    if (dataNumber == 10000000000L) {
-                        dataNumber = 0;
-                    }
                     producer.send(record);
                 }
 
@@ -387,23 +381,9 @@ public class KafkaWriter extends Writer {
                 for (String topic : this.topics) {
                     ProducerRecord<String, String> record =
                             new ProducerRecord<String, String>(topic, line);
-                    dataNumber++;
-
-                    if (dataNumber == 10000000000L) {
-                        dataNumber = 0;
-                    }
                     producer.send(record);
                 }
                 producer.flush();
-
-
-                //等待
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                    logger.error(e.getMessage());
-//                }
 
             }
         }
@@ -420,20 +400,20 @@ public class KafkaWriter extends Writer {
 
 
 
-        public String readOneTransportRecord(RecordReceiver lineReceiver, Configuration config,
+        public String readOneTransportRecord(Record RecordTemp, Configuration config,
                                        TaskPluginCollector taskPluginCollector) {
             char fieldDelimiter = config.getChar(Constant.FIELD_DELIMITER);
             String result = null;
             List<Configuration> columns = config.getListConfiguration(Constant.COLUMN);
             try {
-                Record record = null;
-                if ((record = lineReceiver.getFromReader()) != null) {
+                Record record = RecordTemp;
+//                if ((record = lineReceiver.getFromReader()) != null) {
                     MutablePair<Text, Boolean> transportResult = transportOneRecord(record, fieldDelimiter, columns, taskPluginCollector);
                     if (!transportResult.getRight()) {
                         result = transportResult.left.toString();
-                        System.out.println("【格式化结果】" + result);
+//                        System.out.println("【格式化结果】" + result);
                     }
-                }
+//                }
             } catch (Exception e) {
                 String message = String.format("发生解析异常[%s],请检查！", e.getMessage());
                 logger.error(message);
