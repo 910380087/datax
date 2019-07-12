@@ -227,6 +227,7 @@ public class RedisReader extends Reader {
         @Override
         public void destroy() {
             logger.info("RedisReader task destroy");
+            jedisUtil.destroy();
         }
 
 

@@ -222,6 +222,10 @@ public class RedisWriter extends Writer {
 
         @Override
         public void destroy() {
+
+            logger.info("RedisWriter start destroy ");
+            jedisUtil.destroy();
+
         }
 
 

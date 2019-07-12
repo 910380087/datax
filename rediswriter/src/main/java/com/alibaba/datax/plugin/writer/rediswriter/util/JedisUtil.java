@@ -932,6 +932,11 @@ public class JedisUtil {
         return jedis;
     }
 
+    public void destroy() {
+        jedis.disconnect();
+        jedis = null;
+    }
+
     public static JedisUtil getJedisUtil(String ip, int port, String password) {
         System.out.println("ip:" + ip
          + " port: " + port + " password: " + password);
