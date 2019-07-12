@@ -102,6 +102,7 @@ public class HdfsReader extends Reader {
             }
             //check Kerberos
             Boolean haveKerberos = this.readerOriginConfig.getBool(Key.HAVE_KERBEROS, false);
+
             if(haveKerberos) {
                 this.readerOriginConfig.getNecessaryValue(Key.KERBEROS_KEYTAB_FILE_PATH, HdfsReaderErrorCode.REQUIRED_VALUE);
                 this.readerOriginConfig.getNecessaryValue(Key.KERBEROS_PRINCIPAL, HdfsReaderErrorCode.REQUIRED_VALUE);
