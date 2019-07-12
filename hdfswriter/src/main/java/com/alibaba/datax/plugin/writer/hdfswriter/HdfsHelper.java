@@ -69,25 +69,28 @@ public  class HdfsHelper {
 
         //是否有Kerberos认证
         this.haveKerberos = taskConfig.getBool(Key.HAVE_KERBEROS, false);
+        LOG.info("datax writer是否进行kerberos认证: " + this.haveKerberos);
         if(haveKerberos){
             this.kerberosKeytabFilePath = taskConfig.getString(Key.KERBEROS_KEYTAB_FILE_PATH);
             this.krb5Conf = taskConfig.getString(Key.KERBEROS_KRB5_FILE_PATH);
             this.kerberosPrincipal = taskConfig.getString(Key.KERBEROS_PRINCIPAL);
             hadoopConf.set(HADOOP_SECURITY_AUTHENTICATION_KEY, "kerberos");
             hadoopConf.set("hadoop.rpc.protection", "privacy");
+
+            try {
+                HuaWeiLoginUtil.setKrb5Config(this.krb5Conf);
+                HuaWeiLoginUtil.setConfiguration(hadoopConf);
+            } catch (IOException e) {
+                e.printStackTrace();
+                LOG.error("setKrb5Config或者setConfiguration产生异常");
+                LOG.error(e.getMessage());
+            }
+            this.kerberosAuthentication(this.kerberosPrincipal, this.kerberosKeytabFilePath);
         }
 
-        try {
-            HuaWeiLoginUtil.setKrb5Config(this.krb5Conf);
-            HuaWeiLoginUtil.setConfiguration(hadoopConf);
-        } catch (IOException e) {
-            e.printStackTrace();
-            LOG.error("setKrb5Config或者setConfiguration产生异常");
-            LOG.error(e.getMessage());
-        }
 
 
-        this.kerberosAuthentication(this.kerberosPrincipal, this.kerberosKeytabFilePath);
+
         LOG.error(hadoopConf.toString());
         conf = new JobConf(hadoopConf);
         try {
