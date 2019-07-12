@@ -95,6 +95,8 @@ public class KafkaWriter extends Writer {
                         DBUtilErrorCode.CONF_ERROR);
                 if (Strings.isNullOrEmpty(jassConfFilePath)) {
                     logger.error("KafkaReader kerberos jassConf is null");
+                    System.setProperty("java.security.auth.login.config", jassConfFilePath);
+                    System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
                 }
 
 
@@ -359,29 +361,31 @@ public class KafkaWriter extends Writer {
         }
 
         public void startWrite(RecordReceiver recordReceiver) {
+
             logger.info("KafkaReader start write ");
+//            KafkaReader<String, String> producer;
 
             //实例化一个生产者
             KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 
             //死循环不停的从broker中拿数据
-            Record recordTemp = recordReceiver.getFromReader();
-            while (recordTemp != null) {
-                String line = readOneTransportRecord(recordTemp,this.writerSliceConfig,this.getTaskPluginCollector());
+            Record record = null;
+            while ((record = recordReceiver.getFromReader()) != null) {
+                String line = readOneTransportRecord(record,this.writerSliceConfig,this.getTaskPluginCollector());
 //                logger.info("得到的line为" + line);
                 //发送topic和partition
                 for (TopicPartition topic : this.topicsAndPartitions) {
-                    ProducerRecord<String, String> record =
+                    ProducerRecord<String, String> kafkaRecord =
                             new ProducerRecord<String, String>(topic.topic(), topic.partition(),
                                     null, line);
-                    producer.send(record);
+                    producer.send(kafkaRecord);
                 }
 
                 //发送topic仅仅String
                 for (String topic : this.topics) {
-                    ProducerRecord<String, String> record =
+                    ProducerRecord<String, String> kafkaRecord =
                             new ProducerRecord<String, String>(topic, line);
-                    producer.send(record);
+                    producer.send(kafkaRecord);
                 }
                 producer.flush();
 
@@ -400,13 +404,13 @@ public class KafkaWriter extends Writer {
 
 
 
-        public String readOneTransportRecord(Record RecordTemp, Configuration config,
+        public String readOneTransportRecord(Record recordTemp, Configuration config,
                                        TaskPluginCollector taskPluginCollector) {
             char fieldDelimiter = config.getChar(Constant.FIELD_DELIMITER);
             String result = null;
             List<Configuration> columns = config.getListConfiguration(Constant.COLUMN);
             try {
-                Record record = RecordTemp;
+                Record record = recordTemp;
 //                if ((record = lineReceiver.getFromReader()) != null) {
                     MutablePair<Text, Boolean> transportResult = transportOneRecord(record, fieldDelimiter, columns, taskPluginCollector);
                     if (!transportResult.getRight()) {
