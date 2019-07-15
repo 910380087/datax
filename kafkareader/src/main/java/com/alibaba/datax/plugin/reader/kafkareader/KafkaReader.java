@@ -585,8 +585,8 @@ public class KafkaReader extends Reader {
                             return true;
                         }
                     }
-                    System.out.println(Thread.currentThread().getName() + " data number: " + KafkaReader.getTotalDataNumber() + " stop data number: "
-                            + stopNumberRunner);
+//                    System.out.println(Thread.currentThread().getName() + " data number: " + KafkaReader.getTotalDataNumber() + " stop data number: "
+//                            + stopNumberRunner);
                 }
 
 
@@ -597,7 +597,7 @@ public class KafkaReader extends Reader {
                     ConsumerRecords<String, String> records = consumerTopicAndPartition.poll(100);
                     delay(1000);
                     for (ConsumerRecord<String, String> record : records) {
-                        System.out.println(String.format("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value()));
+//                        System.out.println(String.format("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value()));
                         KafkaReader.increaseTotalDataNumber();
                         //解析发送给reader
                         String kafkaReadValue = record.value();
