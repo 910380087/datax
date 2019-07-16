@@ -1,0 +1,19 @@
+{
+  "name": "mqreader",
+  "parameter": {
+    "servers": "10.1.234.136:9876",
+    "username": "dacp",
+    "password": "dacp@123",
+    "group": "",
+    "pattern": "",
+    "topic": "test",
+    "column": [
+      {
+        "type": "string",
+        "index": 0
+      }
+    ],
+    "nullFormat": "\\N",
+    "fieldDelimiter": ","
+  }
+}

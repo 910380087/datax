@@ -1,0 +1,46 @@
+{
+  "name": "jxreader",
+  "parameter": {
+    "host": "",
+    "port": "",
+    "username": "",
+    "password": "",
+    "protocol": "",
+    "path": [
+      ""
+    ],
+    "encoding": "UTF-8",
+    "type": "json|xml",
+    "column": [
+      {
+        "index": 0,
+        "type": "string"
+      },
+      {
+        "index": 1,
+        "type": "boolean"
+      },
+      {
+        "index": 2,
+        "type": "double"
+      },
+      {
+        "index": 3,
+        "type": "string"
+      },
+      {
+        "index": 4,
+        "type": "date",
+        "format": "yyyy.MM.dd"
+      }
+    ],
+    "mapper": [
+      {
+        "index": 0,
+        "type": "string",
+        "name": "longcheng"
+      }
+    ],
+    "fieldDelimiter": ","
+  }
+}

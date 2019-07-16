@@ -130,35 +130,35 @@ public class Engine {
 
         String jobPath = cl.getOptionValue("job");
 
-        LOG.info("===========传入参数=============");
-        LOG.info(options.toString());
-        LOG.info(jobPath);
-        LOG.info("===========传入参数=============");
+//        LOG.info("===========传入参数=============");
+//        LOG.info(options.toString());
+//        LOG.info(jobPath);
+//        LOG.info("===========传入参数=============");
 
 //        String percentage = cl.getOptionValue("percentage");
 //        String records = cl.getOptionValue("records");
 //        RECORDS = Integer.parseInt(records);
 //        PERCENTAGE = Integer.parseInt(percentage.replace("%",""));
 
-        LOG.info("===========传结束百分比=============");
+//        LOG.info("===========传结束百分比=============");
 //        LOG.info(PERCENTAGE.toString());
-        LOG.info("===========传结束百分比=============");
+//        LOG.info("===========传结束百分比=============");
 
-        LOG.info("===========传结束记录数=============");
+//        LOG.info("===========传结束记录数=============");
 //        LOG.info(RECORDS.toString());
-        LOG.info("===========传结束记录数=============");
+//        LOG.info("===========传结束记录数=============");
 
         // 如果用户没有明确指定jobid, 则 datax.py 会指定 jobid 默认值为-1
         String jobIdString = cl.getOptionValue("jobid");
         RUNTIME_MODE = cl.getOptionValue("mode");
 
-        LOG.info("===========传任务号=============");
-        LOG.info(jobIdString);
-        LOG.info("===========传任务号=============");
-
-        LOG.info("===========传运行模式=============");
-        LOG.info(RUNTIME_MODE);
-        LOG.info("===========传运行模式=============");
+//        LOG.info("===========传任务号=============");
+//        LOG.info(jobIdString);
+//        LOG.info("===========传任务号=============");
+//
+//        LOG.info("===========传运行模式=============");
+//        LOG.info(RUNTIME_MODE);
+//        LOG.info("===========传运行模式=============");
 
         Configuration configuration = ConfigParser.parse(jobPath);
 
