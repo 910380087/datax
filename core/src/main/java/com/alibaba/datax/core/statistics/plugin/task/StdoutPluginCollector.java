@@ -67,7 +67,9 @@ public class StdoutPluginCollector extends AbstractTaskPluginCollector {
         dirtyDataInfo += "[Writer列信息]: " + writerColumn + " \n";
         dirtyDataInfo += "[该脏数据记录]: " + DirtyRecord.asDirtyRecord(dirty)
                 .getColumns() + " \n";
-        dirtyDataInfo += "[脏数据异常]: " + t.toString();
+        if(t != null) {
+            dirtyDataInfo += "[脏数据异常]: " + t.toString();
+        }
         Map<String, Object> msgGroup = new HashMap<String, Object>();
 
         msgGroup.put("type", super.getPluginType().toString());
