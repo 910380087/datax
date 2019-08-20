@@ -6,6 +6,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 public class LongColumn extends Column {
@@ -30,7 +31,8 @@ public class LongColumn extends Column {
 
 			// 当 rawData 为[0-127]时，rawData.bitLength() < 8，导致其 byteSize = 0，简单起见，直接认为其长度为 data.length()
 			// super.setByteSize(rawData.bitLength() / 8);
-			super.setByteSize(data.length());
+//			super.setByteSize(data.length());
+			super.setByteSize(data.getBytes(Charset.defaultCharset()).length);
 		} catch (Exception e) {
 			throw DataXException.asDataXException(
 					CommonErrorCode.CONVERT_NOT_SUPPORT,

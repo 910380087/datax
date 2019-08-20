@@ -174,6 +174,8 @@ public class CommonRdbmsWriter {
         protected static final Logger LOG = LoggerFactory
                 .getLogger(Task.class);
 
+        protected long errorSqlNumber = 0;
+
         protected DataBaseType dataBaseType;
         private static final String VALUE_HOLDER = "?";
 
@@ -368,14 +370,29 @@ public class CommonRdbmsWriter {
             }
         }
 
+
+        protected String fillInsertString( Record record){
+            String insertString = "";
+            for (int i = 0; i < this.columnNumber; i++) {
+                if (i == this.columnNumber - 1){
+                    insertString += record.getColumn(i).asString();
+                }else {
+                    insertString += record.getColumn(i).asString() + ",";
+                }
+            }
+            if (insertString.endsWith(",")){
+                insertString = insertString.substring(0,insertString.length() -1);
+            }
+            return insertString;
+        }
+
         protected void doOneInsert(Connection connection, List<Record> buffer) {
             PreparedStatement preparedStatement = null;
             try {
                 connection.setAutoCommit(true);
-                LOG.info("[insert sql]" + this.writeRecordSql);
+//                LOG.info("[insert sql]" + this.writeRecordSql);
                 preparedStatement = connection
                         .prepareStatement(this.writeRecordSql);
-
                 for (Record record : buffer) {
                     try {
                         preparedStatement = fillPreparedStatement(
@@ -383,7 +400,17 @@ public class CommonRdbmsWriter {
                         preparedStatement.execute();
                     } catch (SQLException e) {
                         LOG.debug(e.toString());
-                        LOG.error("[insert sql]" + this.writeRecordSql);
+                        String sql = this.writeRecordSql;
+//                        String re = "\\([^\\[]*\\)";
+                        this.errorSqlNumber++;
+                        if (errorSqlNumber < 11) {
+                            String re = "VALUES[^\\[]*\\([^\\[]*\\)";
+                            sql = sql.replaceAll(re, "");
+                            sql += "  VALUES (";
+                            sql += fillInsertString(record) + " );";
+                            LOG.error("[insert sql]" + sql);
+
+                        }
                         this.taskPluginCollector.collectDirtyRecord(record, e);
                     } finally {
                         // 最后不要忘了关闭 preparedStatement

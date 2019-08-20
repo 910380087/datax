@@ -23,7 +23,7 @@ public abstract class Column {
 		this.rawData = object;
 		this.type = type;
 		//bytesize加上分隔符的byte 最后一个不变,因为是还有个换行符
-		this.byteSize = byteSize + 1;
+		this.byteSize = byteSize;
 	}
 
 	public Object getRawData() {
@@ -48,7 +48,7 @@ public abstract class Column {
 
 	protected void setByteSize(int byteSize) {
 		//bytesize加上分隔符的byte 最后一个不变,因为是还有个换行符
-		this.byteSize = byteSize + 1;
+		this.byteSize = byteSize;
 	}
 
 	public abstract Long asLong();

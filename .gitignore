@@ -9,9 +9,13 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+.idea/
+*/.idea/**
+*/target/**
 
 # Package Files #
 *.jar
+*.class
 *.war
 *.nar
 *.ear
@@ -19,7 +23,68 @@
 *.tar.gz
 *.rar
 *.iml
-*.idea
+
+
+/target/ 
+.classpath
+.project
+.settings      
+ ##filter databfileăsln file##
+*.mdb  
+*.ldb  
+*.sln    
+##class file##
+*.com  
+*.class  
+*.dll  
+*.exe  
+*.o  
+*.so  
+# compression file
+*.7z  
+*.dmg  
+*.gz  
+*.iso  
+*.jar  
+*.rar  
+*.tar  
+*.zip  
+*.via
+*.tmp
+*.err 
+# OS generated files #  
+.DS_Store  
+.DS_Store?  
+._*  
+.Spotlight-V100  
+.Trashes  
+Icon?  
+ehthumbs.db  
+Thumbs.db  
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+.DS_Store
+node_modules
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+

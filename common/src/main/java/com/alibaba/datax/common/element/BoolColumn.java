@@ -5,6 +5,7 @@ import com.alibaba.datax.common.exception.DataXException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 /**
@@ -13,7 +14,8 @@ import java.util.Date;
 public class BoolColumn extends Column {
 
 	public BoolColumn(Boolean bool) {
-		super(bool, Column.Type.BOOL, 1);
+//		super(bool, Column.Type.BOOL, 1);
+		super(bool, Column.Type.BOOL, String.valueOf(bool).getBytes(Charset.defaultCharset()).length);
 	}
 
 	public BoolColumn(final String data) {
@@ -24,7 +26,8 @@ public class BoolColumn extends Column {
 			this.setByteSize(0);
 		} else {
 			this.setRawData(Boolean.valueOf(data));
-			this.setByteSize(1);
+			this.setByteSize(data.getBytes(Charset.defaultCharset()).length);
+//			this.setByteSize(1);
 		}
 		return;
 	}

@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -531,6 +532,8 @@ public class UnstructuredStorageReaderUtil {
 										format.setTimeZone(TimeZone.getTimeZone("GMT+0800"));
 										columnGenerated = new DateColumn(
 												format.parse(columnValue));
+										//设置日期格式长度
+//										columnGenerated.setByteSpecialSize(columnValue.getBytes(Charset.defaultCharset()).length);
 //										columnGenerated = new StringColumn(columnValue);
 									} else {
 

@@ -5,12 +5,14 @@ import com.alibaba.datax.common.exception.DataXException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 public class DoubleColumn extends Column {
 
 	public DoubleColumn(final String data) {
-		this(data, null == data ? 0 : data.length());
+//		this(data, null == data ? 0 : data.length());
+		this(data, null == data ? 0 : data.getBytes(Charset.defaultCharset()).length);
 		this.validate(data);
 	}
 

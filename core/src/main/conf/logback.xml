@@ -14,6 +14,7 @@
         </encoder>
     </appender>
 
+    <!--
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <encoder>UTF-8</encoder>
         <file>${log.dir}/${ymd}/${log.file.name}-${byMillionSecond}.log</file>
@@ -33,6 +34,7 @@
             </pattern>
         </encoder>
     </appender>
+    -->
 
     <!-- 按照每天生成日志文件(对 DataX 不适应，DataX 是一个进程一个日志) -->
     <!--

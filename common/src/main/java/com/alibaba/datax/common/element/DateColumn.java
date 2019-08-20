@@ -5,6 +5,7 @@ import com.alibaba.datax.common.exception.DataXException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 /**
@@ -30,7 +31,8 @@ public class DateColumn extends Column {
 	 * 实际存储有date改为long的ms，节省存储
 	 * */
 	public DateColumn(final Long stamp) {
-		super(stamp, Column.Type.DATE, (null == stamp ? 0 : 8));
+//		super(stamp, Column.Type.DATE, (null == stamp ? 0 : 8));
+		super(stamp, Column.Type.DATE, String.valueOf(stamp).getBytes(Charset.defaultCharset()).length);
 	}
 
 	/**

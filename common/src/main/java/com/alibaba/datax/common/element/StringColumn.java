@@ -2,10 +2,12 @@ package com.alibaba.datax.common.element;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 import com.alibaba.datax.common.exception.CommonErrorCode;
 import com.alibaba.datax.common.exception.DataXException;
+import sun.nio.cs.StandardCharsets;
 
 /**
  * Created by jingxing on 14-8-24.
@@ -19,7 +21,7 @@ public class StringColumn extends Column {
 
 	public StringColumn(final String rawData) {
 		super(rawData, Column.Type.STRING, (null == rawData ? 0 : rawData
-				.length()));
+				.getBytes(Charset.defaultCharset()).length));
 	}
 
 	@Override
@@ -160,4 +162,5 @@ public class StringColumn extends Column {
 					String.format("String[\"%s\"]不能转为Bytes .", this.asString()));
 		}
 	}
+
 }

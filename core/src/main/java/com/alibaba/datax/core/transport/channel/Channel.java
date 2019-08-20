@@ -120,7 +120,8 @@ public abstract class Channel {
     public void push(final Record r) {
         Validate.notNull(r, "record不能为空.");
         this.doPush(r);
-        this.statPush(1L, r.getByteSize());
+//        LOG.info("调用push");
+        this.statPush(1L, r.getByteSize() + r.getColumnNumber());
     }
 
     public void pushTerminate(final TerminateRecord r) {
@@ -141,7 +142,7 @@ public abstract class Channel {
 
     public Record pull() {
         Record record = this.doPull();
-        this.statPull(1L, record.getByteSize());
+        this.statPull(1L, record.getByteSize() + record.getColumnNumber());
         return record;
     }
 
@@ -168,7 +169,7 @@ public abstract class Channel {
     private long getByteSize(final Collection<Record> rs) {
         long size = 0;
         for (final Record each : rs) {
-            size += each.getByteSize();
+            size += each.getByteSize() + each.getColumnNumber();
         }
         return size;
     }
