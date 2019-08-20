@@ -622,7 +622,7 @@ public class JobContainer extends AbstractContainer {
                 "记录写入速度",
                 String.valueOf(recordSpeedPerSecond)
                         + "rec/s", "读出记录总数",
-                String.valueOf(CommunicationTool.getTotalReadRecords(communication)),
+                String.valueOf(CommunicationTool.getTotalReadRecords(communication) - CommunicationTool.getTotalErrorRecords(communication)),
                 "读写失败总数",
                 String.valueOf(CommunicationTool.getTotalErrorRecords(communication))
         ));
